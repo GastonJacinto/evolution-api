@@ -8,6 +8,7 @@ import {
 import { Genre } from 'src/common/genres.enum';
 import { Class } from 'src/classes/entities/class.entity';
 import { Role } from 'src/common/roles.enum';
+import { ActiveAccount } from 'src/common/active-account.enum';
 
 @Entity({ name: 'instructors' })
 export class Instructor {
@@ -33,8 +34,13 @@ export class Instructor {
   genre: Genre;
   @Column()
   birth: Date;
-  @Column({ default: true, nullable: true })
-  active: boolean;
+  @Column({
+    type: 'enum',
+    enum: ActiveAccount,
+    default: ActiveAccount.INACTIVE,
+    nullable: true,
+  })
+  active: ActiveAccount;
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
   @DeleteDateColumn()

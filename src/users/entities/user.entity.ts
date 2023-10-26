@@ -8,6 +8,7 @@ import {
 import { Role } from 'src/common/roles.enum';
 import { Genre } from 'src/common/genres.enum';
 import { Class } from 'src/classes/entities/class.entity';
+import { ActiveAccount } from 'src/common/active-account.enum';
 @Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -32,8 +33,13 @@ export class User {
   genre: Genre;
   @Column()
   birth: Date;
-  @Column({ default: true, nullable: true })
-  active: boolean;
+  @Column({
+    type: 'enum',
+    enum: ActiveAccount,
+    default: ActiveAccount.ACTIVE,
+    nullable: true,
+  })
+  active: ActiveAccount;
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
   @DeleteDateColumn()

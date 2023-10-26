@@ -50,6 +50,7 @@ export class ClassesService {
       );
     }
     classFound.students.push(userFound);
+    classFound.limit -= 1;
     return await this.classRepository.save(classFound);
   }
   async addInstructorToClass(classId: string, instructorId: string) {

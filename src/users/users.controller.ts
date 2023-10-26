@@ -19,7 +19,6 @@ export class UsersController {
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.registerUser(createUserDto);
   }
-
   @Get()
   findAll() {
     return this.usersService.findAll();
@@ -27,6 +26,10 @@ export class UsersController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findUserById(id);
+  }
+  @Get('/user/:email')
+  findUserByEmail(@Param('id') email: string) {
+    return this.usersService.findOneByEmail(email);
   }
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {

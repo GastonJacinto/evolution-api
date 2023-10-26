@@ -20,18 +20,18 @@ export class AuthService {
       );
     }
     const isPasswordValid = await bcryptjs.compare(
-      userFound.password,
       password,
+      userFound.password,
     );
-    if (isPasswordValid) {
+    if (!isPasswordValid) {
       throw new HttpException(
         'Usuario o contraseña inválidos.',
         HttpStatus.UNAUTHORIZED,
       );
     }
-    const payload = { email: userFound.email, role: userFound.role };
+    const payload = { id: userFound.id, role: userFound.role };
     const token = await this.jwtService.signAsync(payload);
-    return token;
+    return { token };
   }
 
   async userProfile(email: string) {
