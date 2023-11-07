@@ -49,8 +49,10 @@ export class ClassesService {
         'Usted ya se encuentra inscripto a esta clase.',
       );
     }
+    userFound.remaining_classes -= 1;
     classFound.students.push(userFound);
     classFound.limit -= 1;
+    await this.userRepository.save(userFound);
     return await this.classRepository.save(classFound);
   }
   async addInstructorToClass(classId: string, instructorId: string) {
@@ -118,6 +120,8 @@ export class ClassesService {
       (student) => student.id !== studentId,
     );
     classFound.limit += 1;
+    userFound.remaining_classes += 1;
+    await this.userRepository.save(userFound);
     await this.classRepository.save(classFound);
     return {
       message: 'Reserva eliminada.',

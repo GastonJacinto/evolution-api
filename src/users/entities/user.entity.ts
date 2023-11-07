@@ -31,6 +31,8 @@ export class User {
   password: string;
   @Column()
   genre: Genre;
+  @Column({ default: 0, nullable: true })
+  remaining_classes: number;
   @Column()
   birth: Date;
   @Column({

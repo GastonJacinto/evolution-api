@@ -14,6 +14,7 @@ import { User } from './entities/user.entity';
 import { NotFoundError } from 'rxjs';
 import * as bcryptjs from 'bcryptjs';
 import { create } from 'domain';
+import { RemainingClassesPlanEnum } from 'src/common/remaining-classes.enum';
 @Injectable()
 export class UsersService {
   constructor(
@@ -33,6 +34,19 @@ export class UsersService {
     createUserDto.password = await bcryptjs.hash(createUserDto.password, 10);
     const newUser = this.userRepository.create(createUserDto);
     return await this.userRepository.save(newUser);
+  }
+  async addRemainingClasses(id: string, remaining_classes: number) {
+    const userFound = await this.userRepository.findOne({
+      where: { id },
+    });
+    if (!userFound) {
+      throw new HttpException(
+        'El correo electrónico o el DNI ingresado no existen.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    userFound.remaining_classes = remaining_classes;
+    return await this.userRepository.save(userFound);
   }
   //!GET METHODS
   async findOneByEmail(email: string) {
