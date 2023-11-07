@@ -52,6 +52,10 @@ export class ClassesController {
   removeClass(@Param('id') id: string) {
     return this.classesService.removeClass(id);
   }
+  @Delete('/passedClass/:id')
+  passToInactiveClass(@Param('id') id: string) {
+    return this.classesService.passToInactiveClass(id);
+  }
   @Delete(':idClase/student/:idStudent')
   removeStudentFromClass(
     @Param('idClase') classId: string,

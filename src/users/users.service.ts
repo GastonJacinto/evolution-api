@@ -79,6 +79,7 @@ export class UsersService {
       .where('user.id = :id', { id })
       .leftJoinAndSelect('user.classes', 'classes')
       .leftJoinAndSelect('classes.instructor', 'instructor')
+      .addOrderBy('classes.date', 'ASC')
       .getOne();
 
     if (!userFound) {
@@ -92,8 +93,7 @@ export class UsersService {
   }
   //!UPDATE METHODS
   async updateUser(id: string, updateUserDto: UpdateUserDto) {
-    await this.findUserById(id);
-    const updatedUser = await this.userRepository.update(id, updateUserDto);
+    await this.userRepository.update(id, updateUserDto);
     return 'Tus datos fueron actualizados con éxito.';
   }
   //!DELETE METHODS

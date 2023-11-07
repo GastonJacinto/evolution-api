@@ -20,7 +20,7 @@ import { AuthModule } from './auth/auth.module';
       host: `${process.env.POSTGRES_HOST}`,
       username: `${process.env.POSTGRES_USER}`,
       password: `${process.env.POSTGRES_PASSWORD}`,
-      port: parseInt(process.env.PG_PORT),
+      port: parseInt(process.env.POSTGRES_PORT),
       database: `${process.env.POSTGRES_DATABASE}`,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,

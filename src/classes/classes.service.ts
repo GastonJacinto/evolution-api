@@ -10,7 +10,7 @@ import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Class } from './entities/class.entity';
-import { Repository } from 'typeorm';
+import { OrderByCondition, Repository } from 'typeorm';
 import { NotFoundError } from 'rxjs';
 import { User } from 'src/users/entities/user.entity';
 import { Instructor } from 'src/instructors/entities/instructor.entity';
@@ -77,8 +77,10 @@ export class ClassesService {
 
   //!GET FUNCTIONS
   async findAllClasses() {
+    const orderBy: OrderByCondition = { date: 'ASC' };
     const classesFound = await this.classRepository.find({
       relations: ['students', 'instructor'],
+      order: orderBy,
     });
     return classesFound;
   }
@@ -102,6 +104,9 @@ export class ClassesService {
     };
   }
   //!REMOVE FUNCTIONS
+  async passToInactiveClass(id: string) {
+    return await this.classRepository.softDelete(id);
+  }
   async removeClass(id: string) {
     const classFound = await this.classRepository.delete(id);
     return {

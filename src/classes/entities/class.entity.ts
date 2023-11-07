@@ -2,6 +2,7 @@ import { Instructor } from 'src/instructors/entities/instructor.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
   Column,
+  DeleteDateColumn,
   Entity,
   JoinTable,
   ManyToMany,
@@ -21,6 +22,8 @@ export class Class {
   limit: number;
   @ManyToOne(() => Instructor, (instructor) => instructor.id)
   instructor: Instructor;
+  @DeleteDateColumn({ nullable: true, default: null })
+  deletedAt: Date;
   @ManyToMany(() => User, (user) => user.classes)
   @JoinTable()
   students: User[];
