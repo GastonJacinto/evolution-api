@@ -12,7 +12,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Instructor } from './entities/instructor.entity';
 import { Repository } from 'typeorm';
 import * as bcryptjs from 'bcryptjs';
-import { NotFoundError } from 'rxjs';
+import { ActiveAccount } from 'src/common/active-account.enum';
+import { EnableOrDisableEnum } from './types/types';
 
 @Injectable()
 export class InstructorsService {
@@ -40,6 +41,33 @@ export class InstructorsService {
     );
     const newUser = this.instructorRepository.create(createInstructorDto);
     return await this.instructorRepository.save(newUser);
+  }
+  async enableOrDisableInstructor(
+    instructorId: string,
+    action: EnableOrDisableEnum,
+  ) {
+    const instructorFound = await this.instructorRepository.findOne({
+      where: {
+        id: instructorId,
+      },
+    });
+    if (instructorFound && action === EnableOrDisableEnum.ENABLE) {
+      instructorFound.active = ActiveAccount.ACTIVE;
+      await this.instructorRepository.save(instructorFound);
+      return {
+        message: 'Instructor habilitado.',
+      };
+    } else if (instructorFound && action === EnableOrDisableEnum.DISABLE) {
+      instructorFound.active = ActiveAccount.INACTIVE;
+      await this.instructorRepository.save(instructorFound);
+      return {
+        message: 'Instructor inhabilitado.',
+      };
+    } else {
+      throw new BadRequestException(
+        'Error al habilitar o inhabilitar al instructor.',
+      );
+    }
   }
   //!METODOS GET
   async findAll() {

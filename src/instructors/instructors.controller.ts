@@ -10,6 +10,7 @@ import {
 import { InstructorsService } from './instructors.service';
 import { CreateInstructorDto } from './dto/create-instructor.dto';
 import { UpdateInstructorDto } from './dto/update-instructor.dto';
+import { EnableOrDisableEnum } from './types/types';
 
 @Controller('instructors')
 export class InstructorsController {
@@ -18,6 +19,16 @@ export class InstructorsController {
   @Post()
   create(@Body() createInstructorDto: CreateInstructorDto) {
     return this.instructorsService.registerInstructor(createInstructorDto);
+  }
+  @Post('/:action/:instructorId')
+  enableOrDisableInstructor(
+    @Param('action') action: EnableOrDisableEnum,
+    @Param('instructorId') instructorId: string,
+  ) {
+    return this.instructorsService.enableOrDisableInstructor(
+      instructorId,
+      action,
+    );
   }
 
   @Get()

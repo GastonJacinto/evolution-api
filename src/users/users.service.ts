@@ -60,16 +60,20 @@ export class UsersService {
     return users;
   }
   async findUserById(id: string) {
-    const userFound = await this.userRepository.findOne({
-      where: { id },
-      relations: ['classes'],
-    });
+    const userFound = await this.userRepository
+      .createQueryBuilder('user')
+      .where('user.id = :id', { id })
+      .leftJoinAndSelect('user.classes', 'classes')
+      .leftJoinAndSelect('classes.instructor', 'instructor')
+      .getOne();
+
     if (!userFound) {
       throw new HttpException(
         'No se ha encontrado al usuario.',
         HttpStatus.NOT_FOUND,
       );
     }
+
     return userFound;
   }
   //!UPDATE METHODS

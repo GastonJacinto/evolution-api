@@ -68,7 +68,9 @@ export class ClassesService {
     }
     classFound.instructor = instructorFound;
     await this.classRepository.save(classFound);
-    return `La clase ${classFound.name} será dictada por ${instructorFound.name} ${instructorFound.lastname}.`;
+    return {
+      message: `La clase ${classFound.name} será dictada por ${instructorFound.name} ${instructorFound.lastname}.`,
+    };
   }
 
   //!GET FUNCTIONS
@@ -93,12 +95,16 @@ export class ClassesService {
   async updateClass(id: string, updateClassDto: UpdateClassDto) {
     const classFound = await this.findClassById(id);
     await this.classRepository.update(id, updateClassDto);
-    return `Los datos de la clase han sido actualizados.`;
+    return {
+      message: `Los datos de la clase han sido actualizados.`,
+    };
   }
   //!REMOVE FUNCTIONS
   async removeClass(id: string) {
     const classFound = await this.classRepository.delete(id);
-    return `Clase eliminada con éxito.`;
+    return {
+      message: `Clase eliminada con éxito.`,
+    };
   }
 
   async removeStudentFromClass(classId: string, studentId: string) {
@@ -111,13 +117,18 @@ export class ClassesService {
     classFound.students = classFound.students.filter(
       (student) => student.id !== studentId,
     );
+    classFound.limit += 1;
     await this.classRepository.save(classFound);
-    return 'El usuario ha sido borrado de la clase.';
+    return {
+      message: 'Reserva eliminada.',
+    };
   }
   async removeInstructorFromClass(classId: string) {
     const classFound = await this.findClassById(classId);
     classFound.instructor = null;
     await this.classRepository.save(classFound);
-    return 'Se ha removido al instructor de esta clase.';
+    return {
+      message: 'Se ha removido al instructor de esta clase.',
+    };
   }
 }
