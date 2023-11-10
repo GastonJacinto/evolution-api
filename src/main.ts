@@ -11,6 +11,7 @@ async function bootstrap() {
     }),
   );
   // const urlOrigin = 'http://localhost:3000';
+
   const urlOrigin = 'https://frontend-olimpo.onrender.com';
 
   // Configuración de encabezados CORS
