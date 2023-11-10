@@ -35,17 +35,14 @@ export class UsersService {
     const newUser = this.userRepository.create(createUserDto);
     return await this.userRepository.save(newUser);
   }
-  async addRemainingClasses(id: string, remaining_classes: number) {
+  async addRemainingClasses(id: string, creditsToAdd: number) {
     const userFound = await this.userRepository.findOne({
       where: { id },
     });
     if (!userFound) {
-      throw new HttpException(
-        'El correo electrónico o el DNI ingresado no existen.',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('Usuario no encontrado.', HttpStatus.NOT_FOUND);
     }
-    userFound.remaining_classes = remaining_classes;
+    userFound.remaining_classes = creditsToAdd;
     return await this.userRepository.save(userFound);
   }
   //!GET METHODS

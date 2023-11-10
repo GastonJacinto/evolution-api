@@ -9,6 +9,7 @@ import { AuthService } from './auth/auth.service';
 import { ClassesModule } from './classes/classes.module';
 import { InstructorsModule } from './instructors/instructors.module';
 import { AuthModule } from './auth/auth.module';
+import { PaymentsModule } from './payments/payments.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
     ClassesModule,
     InstructorsModule,
+    PaymentsModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, AuthService],

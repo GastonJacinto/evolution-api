@@ -19,6 +19,7 @@ export class AuthService {
         HttpStatus.UNAUTHORIZED,
       );
     }
+    console.log(userFound);
     const isPasswordValid = await bcryptjs.compare(
       password,
       userFound.password,

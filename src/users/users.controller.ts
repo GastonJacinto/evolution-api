@@ -20,12 +20,12 @@ export class UsersController {
     return this.usersService.registerUser(createUserDto);
   }
 
-  @Post('/addRemainingClasses/:remaining_classes/to/:id')
+  @Post('/addRemainingClasses/:creditsToAdd/to/:id')
   addRemainingClasses(
     @Param('id') id: string,
-    @Param('remaining_classes') remaining_classes: number,
+    @Param('creditsToAdd') creditsToAdd: number,
   ) {
-    return this.usersService.addRemainingClasses(id, remaining_classes);
+    return this.usersService.addRemainingClasses(id, creditsToAdd);
   }
   @Get()
   findAll() {

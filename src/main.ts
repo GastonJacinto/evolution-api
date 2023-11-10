@@ -10,7 +10,8 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  const urlOrigin = 'http://localhost:3000';
+  // const urlOrigin = 'http://localhost:3000';
+  const urlOrigin = 'https://frontend-olimpo.onrender.com';
 
   // Configuración de encabezados CORS
   app.enableCors({
