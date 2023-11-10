@@ -2,7 +2,6 @@
 import {
   Injectable,
   BadRequestException,
-  BadGatewayException,
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
@@ -11,10 +10,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
-import { NotFoundError } from 'rxjs';
 import * as bcryptjs from 'bcryptjs';
-import { create } from 'domain';
-import { RemainingClassesPlanEnum } from 'src/common/remaining-classes.enum';
+
 @Injectable()
 export class UsersService {
   constructor(

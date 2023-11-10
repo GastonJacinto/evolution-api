@@ -10,13 +10,10 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  // const urlOrigin = 'http://localhost:3000';
-
-  const urlOrigin = 'https://frontend-olimpo.onrender.com';
-
+  const url = 'http://localhost:3000';
   // Configuración de encabezados CORS
   app.enableCors({
-    origin: urlOrigin, // Cambia esto por el origen correcto
+    origin: url,
     methods: 'GET, POST, PUT, DELETE, PATCH',
     allowedHeaders:
       'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
