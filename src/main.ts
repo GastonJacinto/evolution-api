@@ -10,7 +10,9 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  const url = 'http://localhost:3000';
+  // const url = 'http://localhost:3000';
+  const url = 'https://backend-olimpo-training.onrender.com';
+
   // Configuración de encabezados CORS
   app.enableCors({
     origin: url,
