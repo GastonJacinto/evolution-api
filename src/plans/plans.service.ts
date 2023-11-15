@@ -18,7 +18,11 @@ export class PlansService {
   }
 
   async findAllPlans() {
-    const allPlans = await this.planRepository.find();
+    const allPlans = await this.planRepository.find({
+      order: {
+        price: 'ASC',
+      },
+    });
     return allPlans;
   }
 

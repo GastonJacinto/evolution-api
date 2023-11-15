@@ -108,7 +108,18 @@ export class ClassesService {
     return await this.classRepository.softDelete(id);
   }
   async removeClass(id: string) {
-    const classFound = await this.classRepository.delete(id);
+    const classFound = await this.classRepository.findOne({
+      where: { id },
+      relations: ['students', 'instructor'],
+    });
+    classFound.students.forEach(async (student) => {
+      const userFound = await this.userRepository.findOne({
+        where: { id: student.id },
+      });
+      userFound.remaining_classes += 1;
+      await this.userRepository.save(userFound);
+    });
+    await this.classRepository.delete(id);
     return {
       message: `Clase eliminada con éxito.`,
     };
