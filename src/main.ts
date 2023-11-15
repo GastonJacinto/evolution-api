@@ -11,7 +11,7 @@ async function bootstrap() {
     }),
   );
   // const url = 'http://localhost:3000';
-  const url = 'https://backend-olimpo-training.onrender.com';
+  const url = 'https://evolution-client-git-master-gastonjacinto.vercel.app';
 
   // Configuración de encabezados CORS
   app.enableCors({
