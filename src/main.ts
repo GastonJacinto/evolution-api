@@ -10,8 +10,8 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  // const url = 'http://localhost:3000';
-  const url = 'https://evolution-client.vercel.app';
+  const url = 'http://localhost:3000';
+  // const url = 'https://evolution-client.vercel.app';
 
   // Configuración de encabezados CORS
   app.enableCors({

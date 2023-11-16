@@ -35,10 +35,7 @@ export class InstructorsService {
         'El correo electrónico o el DNI ingresado ya existen.',
       );
     }
-    createInstructorDto.password = await bcryptjs.hash(
-      createInstructorDto.password,
-      10,
-    );
+
     const newUser = this.instructorRepository.create(createInstructorDto);
     return await this.instructorRepository.save(newUser);
   }

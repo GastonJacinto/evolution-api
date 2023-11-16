@@ -1,10 +1,4 @@
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsOptional,
-  Length,
-  MinLength,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, Length } from 'class-validator';
 import { Genre } from 'src/common/genres.enum';
 
 export class CreateInstructorDto {
@@ -14,9 +8,6 @@ export class CreateInstructorDto {
   lastname: string;
   @IsNotEmpty()
   birth: Date;
-  @IsNotEmpty()
-  @MinLength(8)
-  password: string;
   @IsEmail()
   @IsNotEmpty()
   email: string;

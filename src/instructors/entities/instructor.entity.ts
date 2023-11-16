@@ -28,8 +28,6 @@ export class Instructor {
   role: Role.INSTRUCTOR;
   @Column({ unique: true })
   dni: string;
-  @Column({ select: false })
-  password: string;
   @Column()
   genre: Genre;
   @Column()
