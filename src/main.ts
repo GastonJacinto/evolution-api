@@ -15,7 +15,6 @@ async function bootstrap() {
 
   // Configuración de encabezados CORS
   app.enableCors({
-    origin: url,
     methods: 'GET, POST, PUT, DELETE, PATCH',
     allowedHeaders:
       'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
