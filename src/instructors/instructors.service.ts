@@ -2,24 +2,27 @@
 import {
   Injectable,
   BadRequestException,
-  BadGatewayException,
   HttpException,
   HttpStatus,
+  Inject,
+  forwardRef,
 } from '@nestjs/common';
 import { CreateInstructorDto } from './dto/create-instructor.dto';
 import { UpdateInstructorDto } from './dto/update-instructor.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Instructor } from './entities/instructor.entity';
 import { Repository } from 'typeorm';
-import * as bcryptjs from 'bcryptjs';
 import { ActiveAccount } from 'src/common/active-account.enum';
 import { EnableOrDisableEnum } from './types/types';
+import { ClassesService } from 'src/classes/classes.service';
 
 @Injectable()
 export class InstructorsService {
   constructor(
     @InjectRepository(Instructor)
     private readonly instructorRepository: Repository<Instructor>,
+    @Inject(forwardRef(() => ClassesService))
+    private readonly classesService: ClassesService,
   ) {}
 
   //!METODOS POST
@@ -89,7 +92,22 @@ export class InstructorsService {
     return `This action updates a #${id} instructor`;
   }
 
-  removeInstructor(id: number) {
-    return `This action removes a #${id} instructor`;
+  async removeInstructor(id: string) {
+    const instructorFound = await this.instructorRepository.findOne({
+      where: { id },
+      relations: ['classes'],
+    });
+    if (!instructorFound) {
+      throw new HttpException('Instructor no encontrado', HttpStatus.NOT_FOUND);
+    }
+    await Promise.all(
+      instructorFound.classes.map(async (clase) => {
+        await this.classesService.removeInstructorFromClass(clase.id);
+      }),
+    );
+    await this.instructorRepository.delete(id);
+    return {
+      message: `Instructor eliminado con éxito.`,
+    };
   }
 }

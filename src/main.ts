@@ -10,11 +10,12 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  const url = 'http://localhost:3000';
+  // const url = 'http://localhost:3000';
   // const url = 'https://evolution-client.vercel.app';
 
   // Configuración de encabezados CORS
   app.enableCors({
+    // origin: url,
     methods: 'GET, POST, PUT, DELETE, PATCH',
     allowedHeaders:
       'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',

@@ -51,6 +51,6 @@ export class InstructorsController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.instructorsService.removeInstructor(+id);
+    return this.instructorsService.removeInstructor(id);
   }
 }
