@@ -16,7 +16,7 @@ export class Class {
   id: string;
   @Column()
   name: string;
-  @Column()
+  @Column({ type: 'timestamp with time zone' })
   date: Date;
   @Column()
   limit: number;

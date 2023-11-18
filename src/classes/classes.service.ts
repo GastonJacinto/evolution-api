@@ -14,6 +14,7 @@ import { OrderByCondition, Repository } from 'typeorm';
 import { NotFoundError } from 'rxjs';
 import { User } from 'src/users/entities/user.entity';
 import { Instructor } from 'src/instructors/entities/instructor.entity';
+import { create } from 'domain';
 
 @Injectable()
 export class ClassesService {
