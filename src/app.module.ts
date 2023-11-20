@@ -11,6 +11,7 @@ import { InstructorsModule } from './instructors/instructors.module';
 import { AuthModule } from './auth/auth.module';
 import { PaymentsModule } from './payments/payments.module';
 import { PlansModule } from './plans/plans.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { PlansModule } from './plans/plans.module';
     InstructorsModule,
     PaymentsModule,
     PlansModule,
+    DashboardModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, AuthService],

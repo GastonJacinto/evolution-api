@@ -11,6 +11,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import * as bcryptjs from 'bcryptjs';
+import { create } from 'domain';
 
 @Injectable()
 export class UsersService {
@@ -28,9 +29,24 @@ export class UsersService {
         'El correo electrónico o el DNI ingresado ya existen.',
       );
     }
-    createUserDto.password = await bcryptjs.hash(createUserDto.password, 10);
-    const newUser = this.userRepository.create(createUserDto);
-    return await this.userRepository.save(newUser);
+    const birthDate = new Date(createUserDto.birth);
+    const today = new Date();
+    const minBirthDate = new Date(
+      today.getFullYear() - 13,
+      today.getMonth(),
+      today.getDate(),
+    );
+
+    if (birthDate < minBirthDate) {
+      createUserDto.password = await bcryptjs.hash(createUserDto.password, 10);
+      const newUser = this.userRepository.create(createUserDto);
+      return await this.userRepository.save(newUser);
+    } else {
+      throw new HttpException(
+        'Debes ser mayor de 13 años para registrarte.',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
   }
   async addRemainingClasses(id: string, creditsToAdd: number) {
     const userFound = await this.userRepository.findOne({
@@ -87,8 +103,14 @@ export class UsersService {
   }
   //!UPDATE METHODS
   async updateUser(id: string, updateUserDto: UpdateUserDto) {
-    await this.userRepository.update(id, updateUserDto);
-    return 'Tus datos fueron actualizados con éxito.';
+    try {
+      await this.userRepository.update(id, updateUserDto);
+    } catch (error) {
+      throw new Error(error);
+    }
+    return {
+      message: 'Tus datos fueron actualizados con éxito.',
+    };
   }
   //!DELETE METHODS
   async removeUser(id: number) {
