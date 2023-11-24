@@ -12,7 +12,7 @@ export class CreatePaymentDto {
     name: string;
     email: string;
     identification: {
-      dni: string;
+      type: string;
       number: string;
     };
   };
