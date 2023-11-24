@@ -54,6 +54,7 @@ export class PaymentsService {
   }
 
   async paymentCreated(data) {
+    console.log(data);
     return HttpStatus.OK;
   }
   findAll() {
