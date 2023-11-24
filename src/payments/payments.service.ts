@@ -70,7 +70,7 @@ export class PaymentsService {
       {
         headers: {
           'Content-Type': 'application/json',
-          authorization: `Bearer ${process.env.ACCESS_TOKEN_MP}`,
+          Authorization: `Bearer ${process.env.ACCESS_TOKEN_MP}`,
         },
       },
     );
