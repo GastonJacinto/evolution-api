@@ -65,19 +65,22 @@ export class PaymentsService {
   }
 
   async paymentCreated(data) {
-    console.log(process.env.ACCESS_TOKEN_MP);
-
     const response = await fetch(
       'https://api.mercadopago.com/v1/payments/' + data.data.id,
       {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${process.env.ACCESS_TOKEN_MP}`,
+          authorization: `Bearer ${process.env.ACCESS_TOKEN_MP}`,
         },
       },
     );
     const paymentData = await response.json();
     console.log(paymentData);
+    if (paymentData.status === 'approved') {
+      const userDNI = paymentData.payer.identification.number;
+      const userFound = await this.usersService.findWithDni(userDNI);
+      console.log(userFound);
+    }
     return HttpStatus.OK;
   }
   findAll() {
