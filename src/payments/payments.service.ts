@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { MercadoPagoConfig, Preference } from 'mercadopago';
@@ -53,6 +53,9 @@ export class PaymentsService {
     }
   }
 
+  async paymentCreated(data) {
+    return HttpStatus.OK;
+  }
   findAll() {
     return `This action returns all payments`;
   }

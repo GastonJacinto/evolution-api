@@ -19,6 +19,10 @@ export class PaymentsController {
   async createPreference(@Body() req: CreatePaymentDto) {
     return this.paymentsService.createPayment(req);
   }
+  @Post('paymentCreated')
+  async paymentCreated(@Body() data) {
+    return this.paymentsService.paymentCreated(data);
+  }
   @Get()
   findAll() {
     return this.paymentsService.findAll();
