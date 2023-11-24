@@ -1,6 +1,7 @@
 import { Currency } from 'mercadopago/shared/currency';
 
 export class CreatePaymentDto {
+  id: string;
   description: string;
   title: string;
   quantity: number;
@@ -10,5 +11,9 @@ export class CreatePaymentDto {
   payer: {
     name: string;
     email: string;
+    identification: {
+      dni: string;
+      number: string;
+    };
   };
 }

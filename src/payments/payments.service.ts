@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { HttpStatus, Injectable } from '@nestjs/common';
+
+import { HttpStatus, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { MercadoPagoConfig, Preference } from 'mercadopago';
@@ -10,8 +11,14 @@ import {
   PreferencePayer,
 } from 'mercadopago/models/preferences/create-payload.model';
 import { PreferenceCreateData } from 'mercadopago/dist/clients/preference/create/types';
+import { UsersService } from 'src/users/users.service';
 @Injectable()
 export class PaymentsService {
+  constructor(
+    @Inject(forwardRef(() => UsersService))
+    private readonly usersService: UsersService,
+  ) {}
+
   async createPayment(req: CreatePaymentDto) {
     const client = new MercadoPagoConfig({
       accessToken: `${process.env.ACCESS_TOKEN_MP}`,
@@ -24,7 +31,7 @@ export class PaymentsService {
         binary_mode: true,
         items: [
           {
-            id: '',
+            id: req.id,
             title: req.title,
             description: req.description,
             quantity: req.quantity,
@@ -36,6 +43,10 @@ export class PaymentsService {
         payer: {
           name: req.payer.name,
           email: req.payer.email,
+          identification: {
+            type: req.payer.identification.dni,
+            number: req.payer.identification.number,
+          },
         } as PreferencePayer,
         back_urls: {
           success: localUrl,
@@ -54,7 +65,16 @@ export class PaymentsService {
   }
 
   async paymentCreated(data) {
-    console.log(data);
+    const paymentData = await fetch(
+      'https://api.mercadopago.com/v1/payments/' + data.data.id,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${process.env.ACCESS_TOKEN_MP}`,
+        },
+      },
+    );
+    console.log(paymentData);
     return HttpStatus.OK;
   }
   findAll() {

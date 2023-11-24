@@ -101,6 +101,16 @@ export class UsersService {
 
     return userFound;
   }
+  async findWithDni(dni: string) {
+    const userFound = await this.userRepository.findOne({
+      where: { dni },
+    });
+    if (!userFound) {
+      throw new HttpException('Usuario no encontrado.', HttpStatus.NOT_FOUND);
+    }
+    return userFound;
+  }
+
   //!UPDATE METHODS
   async updateUser(id: string, updateUserDto: UpdateUserDto) {
     try {
