@@ -42,8 +42,8 @@ export class PaymentsService {
           },
         ],
         payer: {
-          name: req.payer.name,
-          surname: req.payer.surname,
+          first_name: req.payer.name,
+          last_name: req.payer.surname,
           email: req.payer.email,
           identification: {
             type: req.payer.identification.type,
