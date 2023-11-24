@@ -67,6 +67,7 @@ export class PaymentsService {
   }
 
   async paymentCreated(data) {
+    console.log(data);
     const response = await fetch(
       'https://api.mercadopago.com/v1/payments/' + data.data.id,
       {
