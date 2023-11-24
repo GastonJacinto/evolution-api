@@ -24,6 +24,7 @@ export class PaymentsService {
       accessToken: `${process.env.ACCESS_TOKEN_MP}`,
       options: { timeout: 5000 },
     });
+    console.log(req.payer);
     const localUrl = 'http://localhost:3000/profile';
     const preference = new mercadopago.Preference(client);
     const preferenceData: PreferenceCreateData = {
@@ -44,7 +45,7 @@ export class PaymentsService {
           name: req.payer.name,
           email: req.payer.email,
           identification: {
-            type: req.payer.identification.dni,
+            type: req.payer.identification.type,
             number: req.payer.identification.number,
           },
         } as PreferencePayer,
@@ -81,7 +82,6 @@ export class PaymentsService {
     if (paymentData.status === 'approved') {
       console.log('entro');
       console.log('----------------------------------------------');
-
       const userDNI = paymentData.payer.identification.number;
       console.log(userDNI);
       const userFound = await this.usersService.findWithDni(userDNI);
@@ -90,8 +90,10 @@ export class PaymentsService {
     }
     return HttpStatus.OK;
   }
-  findAll() {
-    return `This action returns all payments`;
+  async findAll(userDNI: string) {
+    console.log(userDNI);
+    const userFound = await this.usersService.findWithDni(userDNI);
+    return userFound;
   }
 
   findOne(id: number) {

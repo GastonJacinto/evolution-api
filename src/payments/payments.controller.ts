@@ -23,15 +23,15 @@ export class PaymentsController {
   async paymentCreated(@Body() data) {
     return this.paymentsService.paymentCreated(data);
   }
-  @Get()
-  findAll() {
-    return this.paymentsService.findAll();
+  @Get(':userDNI')
+  findAll(@Param('userDNI') userDNI: string) {
+    return this.paymentsService.findAll(userDNI);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.paymentsService.findOne(+id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.paymentsService.findOne(+id);
+  // }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePaymentDto: UpdatePaymentDto) {

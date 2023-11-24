@@ -102,6 +102,7 @@ export class UsersService {
     return userFound;
   }
   async findWithDni(dni: string) {
+    console.log(dni);
     const userFound = await this.userRepository.findOne({
       where: { dni },
     });
