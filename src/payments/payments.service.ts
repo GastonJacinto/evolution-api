@@ -65,7 +65,7 @@ export class PaymentsService {
   }
 
   async paymentCreated(data) {
-    const paymentData = await fetch(
+    const response = await fetch(
       'https://api.mercadopago.com/v1/payments/' + data.data.id,
       {
         headers: {
@@ -74,6 +74,7 @@ export class PaymentsService {
         },
       },
     );
+    const paymentData = await response.json();
     console.log(paymentData);
     return HttpStatus.OK;
   }
