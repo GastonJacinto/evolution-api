@@ -43,6 +43,7 @@ export class PaymentsService {
         ],
         payer: {
           name: req.payer.name,
+          surname: req.payer.surname,
           email: req.payer.email,
           identification: {
             type: req.payer.identification.type,

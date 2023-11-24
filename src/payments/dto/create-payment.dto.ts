@@ -10,6 +10,7 @@ export class CreatePaymentDto {
   currency_id: Currency;
   payer: {
     name: string;
+    surname: string;
     email: string;
     identification: {
       type: string;
