@@ -59,6 +59,7 @@ export class PaymentsService {
       },
     };
     try {
+      console.log(preferenceData);
       const { init_point } = await preference.create(preferenceData);
       return { init_point };
     } catch (error) {
