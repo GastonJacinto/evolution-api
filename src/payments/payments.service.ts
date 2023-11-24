@@ -76,9 +76,16 @@ export class PaymentsService {
     );
     const paymentData = await response.json();
     console.log(paymentData);
+    console.log('----------------------------------------------');
+
     if (paymentData.status === 'approved') {
+      console.log('entro');
+      console.log('----------------------------------------------');
+
       const userDNI = paymentData.payer.identification.number;
+      console.log(userDNI);
       const userFound = await this.usersService.findWithDni(userDNI);
+      console.log('----------------------------------------------');
       console.log(userFound);
     }
     return HttpStatus.OK;
