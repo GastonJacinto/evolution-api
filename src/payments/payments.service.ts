@@ -30,7 +30,8 @@ export class PaymentsService {
       accessToken: `${process.env.ACCESS_TOKEN_MP}`,
       options: { timeout: 5000 },
     });
-    const localUrl = 'http://localhost:3000/profile';
+    // const returnUrl = 'http://localhost:3000/profile';
+    const returnUrl = 'https://evolution-client.vercel.app/profile';
     const preference = new mercadopago.Preference(client);
     const preferenceData: PreferenceCreateData = {
       body: {
@@ -57,9 +58,9 @@ export class PaymentsService {
         } as PreferencePayer,
         additional_info: `User ${req.payer.identification.number}`,
         back_urls: {
-          success: localUrl,
-          failure: localUrl,
-          pending: localUrl,
+          success: returnUrl,
+          failure: returnUrl,
+          pending: returnUrl,
         } as PreferenceBackUrl,
         auto_return: 'approved',
         external_reference: `User ${req.payer.identification.number}/Credits ${req.credits}`,
