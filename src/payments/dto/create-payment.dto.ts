@@ -8,6 +8,7 @@ export class CreatePaymentDto {
   unit_price: number;
   image: string;
   currency_id: Currency;
+  credits: number;
   payer: {
     name: string;
     surname: string;

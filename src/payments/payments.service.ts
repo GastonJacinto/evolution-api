@@ -24,7 +24,6 @@ export class PaymentsService {
       accessToken: `${process.env.ACCESS_TOKEN_MP}`,
       options: { timeout: 5000 },
     });
-    console.log(req.payer);
     const localUrl = 'http://localhost:3000/profile';
     const preference = new mercadopago.Preference(client);
     const preferenceData: PreferenceCreateData = {
@@ -50,16 +49,17 @@ export class PaymentsService {
             number: req.payer.identification.number,
           },
         } as PreferencePayer,
+        additional_info: `User ${req.payer.identification.number}`,
         back_urls: {
           success: localUrl,
           failure: localUrl,
           pending: localUrl,
         } as PreferenceBackUrl,
         auto_return: 'approved',
+        external_reference: `User ${req.payer.identification.number}/Credits ${req.credits}`,
       },
     };
     try {
-      console.log(preferenceData);
       const { init_point } = await preference.create(preferenceData);
       return { init_point };
     } catch (error) {
@@ -68,9 +68,8 @@ export class PaymentsService {
   }
 
   async paymentCreated(data) {
-    console.log(data);
     const response = await fetch(
-      'https://api.mercadopago.com/v1/payments/' + data.data.id,
+      `https://api.mercadopago.com/v1/payments/${data.data.id}`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -79,17 +78,12 @@ export class PaymentsService {
       },
     );
     const paymentData = await response.json();
-    console.log(paymentData);
-    console.log('----------------------------------------------');
-
     if (paymentData.status === 'approved') {
-      console.log('entro');
-      console.log('----------------------------------------------');
-      const userDNI = paymentData.payer.identification.number;
-      console.log(userDNI);
-      const userFound = await this.usersService.findWithDni(userDNI);
-      console.log('----------------------------------------------');
-      console.log(userFound);
+      const credits = paymentData.external_reference.split('/')[1][1];
+      const userId = paymentData.external_reference.split('/')[0][1];
+      console.log(credits);
+      console.log(userId);
+      await this.usersService.addRemainingClasses(userId, +credits);
     }
     return HttpStatus.OK;
   }
