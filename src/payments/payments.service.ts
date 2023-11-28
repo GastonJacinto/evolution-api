@@ -89,7 +89,7 @@ export class PaymentsService {
       if (paymentData.status === 'approved') {
         //Hago split() a la propiedad external_reference donde viene el ID del usuario y los creditos a agregar.
         const creditsPart = paymentData.external_reference.split('/')[1];
-        const userIdPart = paymentData.external_reference.split('/')[0][1];
+        const userIdPart = paymentData.external_reference.split('/')[0];
         //Obtengo los datos y ejecuto la función para agregar los créditos al usuario.
         const credits = creditsPart.split(' ')[1];
         const userId = userIdPart.split(' ')[1];
