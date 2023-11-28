@@ -1,6 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { HttpStatus, forwardRef, Inject, Injectable } from '@nestjs/common';
+import {
+  HttpStatus,
+  forwardRef,
+  Inject,
+  Injectable,
+  HttpException,
+} from '@nestjs/common';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { MercadoPagoConfig, Preference } from 'mercadopago';
@@ -68,24 +74,33 @@ export class PaymentsService {
   }
 
   async paymentCreated(data) {
-    const response = await fetch(
-      `https://api.mercadopago.com/v1/payments/${data.data.id}`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: `Bearer ${process.env.ACCESS_TOKEN_MP}`,
+    try {
+      const response = await fetch(
+        `https://api.mercadopago.com/v1/payments/${data.data.id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: `Bearer ${process.env.ACCESS_TOKEN_MP}`,
+          },
         },
-      },
-    );
-    const paymentData = await response.json();
-    if (paymentData.status === 'approved') {
-      const credits = paymentData.external_reference.split('/')[1][1];
-      const userId = paymentData.external_reference.split('/')[0][1];
-      console.log(credits);
-      console.log(userId);
-      await this.usersService.addRemainingClasses(userId, +credits);
+      );
+      const paymentData = await response.json();
+
+      if (paymentData.status === 'approved') {
+        //Hago split() a la propiedad external_reference donde viene el ID del usuario y los creditos a agregar.
+        const creditsPart = paymentData.external_reference.split('/')[1];
+        const userIdPart = paymentData.external_reference.split('/')[0][1];
+        //Obtengo los datos y ejecuto la función para agregar los créditos al usuario.
+        const credits = creditsPart.split(' ')[1];
+        const userId = userIdPart.split(' ')[1];
+        console.log(credits);
+        console.log(userId);
+        await this.usersService.addRemainingClasses(userId, +credits);
+      }
+      return HttpStatus.OK;
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.BAD_GATEWAY);
     }
-    return HttpStatus.OK;
   }
   async findAll(userDNI: string) {
     console.log(userDNI);
