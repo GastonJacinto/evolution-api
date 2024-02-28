@@ -131,7 +131,7 @@ export class ClassesService {
 
     const userFound = await this.userRepository.findOneById(studentId);
     if (!userFound) {
-      throw new HttpException('Usuario no encontrado.', HttpStatus.NOT_FOUND);
+      throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
     }
     classFound.students = classFound.students.filter(
       (student) => student.id !== studentId,
@@ -141,7 +141,7 @@ export class ClassesService {
     await this.userRepository.save(userFound);
     await this.classRepository.save(classFound);
     return {
-      message: 'Reserva eliminada.',
+      message: 'Your reservation was successfully deleted.',
     };
   }
   async removeInstructorFromClass(classId: string) {

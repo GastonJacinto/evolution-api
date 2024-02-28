@@ -9,6 +9,7 @@ import { UpdatePasswordDto } from 'src/users/dto/update-password.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'mercadopago';
 import { Repository } from 'typeorm';
+import { LoginDashboardDto } from './dto/login-dashboard.dto';
 @Injectable()
 export class AuthService {
   constructor(
@@ -49,7 +50,7 @@ export class AuthService {
     if (!userFound) {
       throw new HttpException(
         'Hubo un problema al actualizar tu contraseña.',
-        HttpStatus.UNAUTHORIZED,
+        HttpStatus.BAD_REQUEST,
       );
     }
     const isPasswordValid = await bcryptjs.compare(
@@ -70,5 +71,17 @@ export class AuthService {
     return {
       message: 'Contraseña actualizada con éxito. Cerrando sesión...',
     };
+  }
+
+  async loginDashboard(credentials: LoginDashboardDto) {
+    if (
+      credentials.password === process.env.ADMIN_PASSWORD &&
+      credentials.username === process.env.ADMIN_USERNAME
+    ) {
+      return {
+        message: 'Redirigiendo al panel de administrador...',
+      };
+    }
+    throw new HttpException('Credenciales inválidas.', HttpStatus.UNAUTHORIZED);
   }
 }

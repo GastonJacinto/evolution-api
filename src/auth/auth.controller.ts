@@ -6,6 +6,7 @@ import { Auth } from './decorators/auth.decorator';
 import { ActiveUser } from './decorators/active-user.decorator';
 import { UserActiveInterface } from './interfaces/user-active.interface';
 import { UpdatePasswordDto } from 'src/users/dto/update-password.dto';
+import { LoginDashboardDto } from './dto/login-dashboard.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -24,5 +25,9 @@ export class AuthController {
   @Auth(Role.USER)
   changePassword(@Body() updatePassword: UpdatePasswordDto) {
     return this.authService.changePassword(updatePassword);
+  }
+  @Post('dashboard')
+  loginDashboard(@Body() credentials: LoginDashboardDto) {
+    return this.authService.loginDashboard(credentials);
   }
 }

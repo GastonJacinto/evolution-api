@@ -30,8 +30,8 @@ export class PaymentsService {
       accessToken: `${process.env.ACCESS_TOKEN_MP}`,
       options: { timeout: 5000 },
     });
-    // const returnUrl = 'http://localhost:3000/profile';
-    const returnUrl = 'https://evolution-client.vercel.app/profile';
+    const returnUrl = 'http://localhost:3000/profile';
+    // const returnUrl = 'https://evolution-client.vercel.app/profile';
     const preference = new mercadopago.Preference(client);
     const preferenceData: PreferenceCreateData = {
       body: {
@@ -94,8 +94,6 @@ export class PaymentsService {
         //Obtengo los datos y ejecuto la función para agregar los créditos al usuario.
         const credits = creditsPart.split(' ')[1];
         const userId = userIdPart.split(' ')[1];
-        console.log(credits);
-        console.log(userId);
         await this.usersService.addRemainingClasses(userId, +credits);
       }
       return HttpStatus.OK;
@@ -104,7 +102,6 @@ export class PaymentsService {
     }
   }
   async findAll(userDNI: string) {
-    console.log(userDNI);
     const userFound = await this.usersService.findWithDni(userDNI);
     return userFound;
   }
