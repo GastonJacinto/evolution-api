@@ -14,7 +14,10 @@ export class PlansService {
 
   async createPlan(createPlanDto: CreatePlanDto) {
     const newPlan = await this.planRepository.create(createPlanDto);
-    return await this.planRepository.save(newPlan);
+    await this.planRepository.save(newPlan);
+    return {
+      data: 'Plan creado con éxito.',
+    };
   }
 
   async findAllPlans() {
@@ -43,7 +46,7 @@ export class PlansService {
 
   async removePlan(id: string) {
     try {
-      const deletedPlan = await this.planRepository.delete(id);
+      await this.planRepository.delete(id);
       return {
         message: 'Plan borrado con éxito.',
       };
